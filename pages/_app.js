@@ -24,17 +24,22 @@ export default function App({ Component, pageProps }) {
       console.log(error);
       localStorage.removeItem("cart");
     };
-    router.events.on('routeChangeStart', ()=> {
+    router.events.on('routeChangeStart', () => {
       setProgress(40);
     });
-    router.events.on('routeChangeComplete', ()=> {
+    router.events.on('routeChangeComplete', () => {
       setProgress(100);
     });
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUser({ value: token });
-    };
   }, [router.query])
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_HOST}/api/get_user?token=${localStorage.getItem("token")}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setUser({value: data.user})
+        }
+      })
+  }, []);
   const saveCart = (cartData) => {
     localStorage.setItem("cart", JSON.stringify(cartData));
     let subT = 0;
@@ -84,7 +89,7 @@ export default function App({ Component, pageProps }) {
   const cartAllElements = {
     user, logout, cart, addToCart, removeFromCart, clearCart, buyNow, subTotal
   }
-  
+
   return <div className='max-w-[1500px] mx-auto pt-12 overflow-hidden'>
     <LoadingBar
       color='#746CFF'

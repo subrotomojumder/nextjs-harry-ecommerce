@@ -45,7 +45,7 @@ const Navbar = ({ cartAllElements: { user, logout, cart, clearCart, addToCart, r
                     {dropdown && <div className="absolute right-8 bg-pink-300 top-8 rounded-md px-3 py-3 w-28 text-center">
                         <ul>
                             <Link href={`/myaccount`}><li className="py-1 w-full hover:shadow-md hover:text-white cursor-pointer text-sm duration-75">Account</li></Link>
-                            <Link href={`/my-orders`}><li className="py-1 w-full hover:shadow-md hover:text-white cursor-pointer text-sm duration-75">Orders</li></Link>
+                            <Link href={`/orders/${user.value?.email}`}><li className="py-1 w-full hover:shadow-md hover:text-white cursor-pointer text-sm duration-75">Orders</li></Link>
                             <li onClick={logout} className="py-1 w-full hover:shadow-md hover:text-white cursor-pointer text-sm duration-75">Logout</li>
                         </ul>
                     </div>}
@@ -76,7 +76,7 @@ const Navbar = ({ cartAllElements: { user, logout, cart, clearCart, addToCart, r
                     {Object.keys(cart).length > 0 &&
                         <div className='flex justify-center gap-5 mt-6 px-6'>
                             <button onClick={() => { clearCart(); toggleCart() }} className='font-medium text-white bg-red-400 hover:bg-red-500 active:outline active:text-yellow-300 outline-yellow-500 py-[6px] w-full text-center rounded-md duration-100'>Clear</button>
-                            <Link href={`/checkout`} className='font-medium text-white bg-orange-300 hover:bg-orange-400 active:outline active:text-yellow-300 outline-yellow-500 py-[6px] w-full text-center rounded-md duration-100'> <button onClick={toggleCart}>Checkout</button></Link>
+                            <Link href={`/checkout`}  onClick={toggleCart} className='font-medium text-white bg-orange-300 hover:bg-orange-400 active:outline active:text-yellow-300 outline-yellow-500 py-[6px] w-full text-center rounded-md duration-100'> <button>Checkout</button></Link>
                         </div>
                     }
                 </div>

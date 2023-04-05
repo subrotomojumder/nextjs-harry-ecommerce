@@ -1,16 +1,21 @@
 import React, { useEffect } from 'react';
 import mongoose from 'mongoose'
-import Order from '../models/Order';
+import Order from '../../models/Order';
 import { useRouter } from 'next/router';
 
-const MyOrders = ({ orders }) => {
-    console.log(orders);
+
+const MyOrders = ({ cartAllElements: { user: { value } }, orders }) => {
     const router = useRouter();
     useEffect(() => {
         if (!localStorage.getItem('token')) {
             router.push('/');
         }
     }, [router.query])
+console.log(orders);
+
+    if (!value?.email) {
+        return <h1>loading,,,,,,,,,,,,,,,</h1>
+    }
 
     return (
         <div>
@@ -107,12 +112,12 @@ const MyOrders = ({ orders }) => {
 };
 export async function getServerSideProps(context) {
     if (!mongoose.connections[0].readyState) {
-        await mongoose.connect(process.env.MONGO_URL);
-    }
-    const orders = await Order.find({});
+        await mongoose.connect(process.env.MONGO_URI);
+    };
 
+    const orders = await Order.find({ email: context.query['my-orders'] });
     return {
-        props: { orders }, // will be passed to the page component as props
+        props: { orders: JSON.parse(JSON.stringify(orders)) }, // will be passed to the page component as props
     }
 }
 
